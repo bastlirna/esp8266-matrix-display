@@ -8,10 +8,17 @@
 
 #include <display.h>
 
-int network_manager_init(){
-    scrollText("WIFI manager up", 16);
-  WiFiManager wifiManager;
+static WiFiManager wifiManager;
 
-  wifiManager.startConfigPortal("OnDemandAP");
+int network_manager_init(){
+  scrollText("WIFI manager up", 16);
+
+  wifiManager.resetSettings();
+  wifiManager.startConfigPortal("Dotgrid display config");
   Serial.println("connected...yeey :)");
+
+  delay(500);
+  WiFi.softAPdisconnect();
+  WiFi.mode(WIFI_STA);
+
 }

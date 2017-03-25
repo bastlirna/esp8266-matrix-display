@@ -16,11 +16,12 @@ DebouncedInput button(buttonPin, 20, true, numToKeep);
 int init_button(){
     button.begin();
 }
-int check_button(){
-if (button.changedTo(LOW)){
-//  Serial.println(F(" button pressed"));
-network_manager_init();
-Serial.println("connected...yeey :)");
 
-}
+int check_button(){
+  if (button.changedTo(LOW)){
+    //  Serial.println(F(" button pressed"));
+    network_manager_init();
+    Serial.println("connected...yeey :)");
+
+  }
 }
