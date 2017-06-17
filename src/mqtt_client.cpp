@@ -20,16 +20,17 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
   Serial.println();
   //  scrollText((char *)payload, length);
-  printText(0, 9, (char *)payload, length);
 
-  // Switch on the LED if an 1 was received as first character
-  if ((char)payload[0] == '1') {
-    digitalWrite(BUILTIN_LED, LOW);   // Turn the LED on (Note that LOW is the voltage level
-    // but actually the LED is on; this is because
-    // it is acive low on the ESP-01)
-  } else {
-    digitalWrite(BUILTIN_LED, HIGH);  // Turn the LED off by making the voltage HIGH
+  if(strcmp(topic, "/dotgrid/text") == 0){
+    printText(0, 9, (char *)payload, length);
+  }else if(strcmp(topic, "/dotgrid/intensity") == 0){
+    char buff[8];
+    memset(buff, 0, sizeof(buff));
+    memcpy(buff, payload, max(length, sizeof(buff)));
+    
+    setIntensity(atoi(buff));
   }
+
 
 }
 
@@ -49,7 +50,9 @@ void reconnect() {
       //client.publish("/jirkuv_pokusnej", "EHLO world");
       // ... and resubscribe
     //  client.subscribe("/arduinodays/webmessage");
-            client.subscribe("/dotgrid/text");
+
+      client.subscribe("/dotgrid/text");
+      client.subscribe("/dotgrid/intensity");
 
     } else {
       Serial.print("failed, rc=");

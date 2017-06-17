@@ -48,6 +48,14 @@ void scrollText(char *p, unsigned int length)
   }
 }
 
+void setIntensity(uint32_t intensity)
+{
+  if(intensity > MAX_INTENSITY){
+    intensity = MAX_INTENSITY;
+  }
+  mx.control(MD_MAX72XX::INTENSITY, intensity);
+}
+
 void printText(uint8_t modStart, uint8_t modEnd, char *pMsg, unsigned int length)
 // Print the text string to the LED matrix modules specified.
 // Message area is padded with blank columns after printing.
@@ -79,7 +87,7 @@ void printText(uint8_t modStart, uint8_t modEnd, char *pMsg, unsigned int length
         state++;
         // !! deliberately fall through to next state to start displaying
         length--;
-        
+
 
       case 1:	// display the next part of the character
         mx.setColumn(col--, cBuf[curLen++]);
